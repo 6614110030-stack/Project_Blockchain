@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เพิ่มข้อมูล - CarChain</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="scan-lines"></div>
+<div class="grid-overlay"></div>
+
+<nav class="navbar navbar-dark">
+  <div class="container">
+    <div class="navbar-brand-container">
+      <a href="dashboard.html" style="text-decoration: none; color: inherit;">
+        <span class="navbar-brand">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">CAR<span class="highlight">CHAIN</span></span>
+        </span>
+      </a>
+      <div class="blockchain-pulse"></div>
+    </div>
+
+    <div class="nav-links">
+      <span class="user-welcome" style="display:none;">Hello, <span class="user-info">User</span></span>
+      <a href="dashboard.html" class="nav-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">Dashboard</span>
+      </a>
+      <!-- เพิ่มข้อมูล เฉพาะ garage -->
+      <a href="add.html" class="nav-btn active garage-only" style="display:none;">
+        <span class="btn-bg"></span>
+        <span class="btn-text">เพิ่มข้อมูล</span>
+      </a>
+      <!-- ค้นหารถ ทุก role -->
+      <a href="search.html" class="nav-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">ค้นหารถ</span>
+      </a>
+      <a href="blockchain.html" class="nav-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">Blockchain</span>
+      </a>
+      <a href="#" onclick="logout(); return false;" class="nav-btn logout-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">ออกจากระบบ</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container page-container">
+
+  <div class="page-header">
+    <div class="page-icon">📝</div>
+    <h2 class="page-title">เพิ่มข้อมูลการซ่อมบำรุง</h2>
+    <p class="page-subtitle">บันทึกข้อมูลเข้าสู่ Blockchain Network</p>
+  </div>
+
+  <div class="form-card">
+
+    <div class="form-step">
+      <div class="step-indicator">
+        <div class="step-number">1</div>
+        <div class="step-label">ข้อมูลพื้นฐาน</div>
+      </div>
+
+      <div class="input-group-custom">
+        <label for="vin" class="input-label">
+          <span class="label-icon">🚗</span>
+          หมายเลขตัวถัง (VIN)
+        </label>
+        <input
+          id="vin"
+          type="text"
+          class="input-field"
+          placeholder="เช่น 1HGBH41JXMN109186"
+          autocomplete="off"
+        >
+        <div class="input-border"></div>
+      </div>
+
+      <div class="input-group-custom">
+        <label for="detail" class="input-label">
+          <span class="label-icon">📋</span>
+          รายละเอียดการซ่อม
+        </label>
+        <textarea
+          id="detail"
+          class="input-field input-textarea"
+          placeholder="อธิบายงานซ่อมบำรุง..."
+          rows="4"
+        ></textarea>
+        <div class="input-border"></div>
+      </div>
+
+      <div class="input-group-custom">
+        <label for="mileage" class="input-label">
+          <span class="label-icon">📏</span>
+          เลขไมล์ปัจจุบัน (km)
+        </label>
+        <input
+          id="mileage"
+          type="number"
+          class="input-field"
+          placeholder="เช่น 45000"
+          autocomplete="off"
+        >
+        <div class="input-border"></div>
+      </div>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <div class="form-step">
+      <div class="step-indicator">
+        <div class="step-number">2</div>
+        <div class="step-label">ยืนยันและบันทึก</div>
+      </div>
+
+      <div class="transaction-preview">
+        <div class="preview-title">Transaction Preview</div>
+        <div class="preview-content">
+          <div class="preview-item">
+            <span class="preview-label">Hash Algorithm:</span>
+            <span class="preview-value">SHA-256</span>
+          </div>
+          <div class="preview-item">
+            <span class="preview-label">Timestamp:</span>
+            <span class="preview-value" id="timestamp">—</span>
+          </div>
+          <div class="preview-item">
+            <span class="preview-label">Status:</span>
+            <span class="preview-value status-pending">Pending</span>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="addTransaction()" class="submit-btn">
+        <span class="btn-glow"></span>
+        <span class="btn-icon">⛓️</span>
+        <span class="btn-text">บันทึกลง Blockchain</span>
+        <span class="btn-particles"></span>
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+<script>
+  // Redirect customer ออกทันที ก่อน render form
+  (function guardPage() {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!localStorage.getItem('sessionId')) {
+      window.location.href = 'login.html';
+      return;
+    }
+    if (user.role !== 'garage') {
+      Swal.fire({
+        icon: 'error',
+        title: 'ไม่มีสิทธิ์เข้าถึง',
+        text: 'หน้านี้สำหรับอู่ซ่อมรถเท่านั้น',
+        background: '#0a0a0a',
+        color: '#ff0044',
+        confirmButtonColor: '#ff0044'
+      }).then(() => {
+        window.location.href = 'dashboard.html';
+      });
+    }
+  })();
+
+  // Update timestamp every second
+  setInterval(() => {
+    const el = document.getElementById('timestamp');
+    if (el) el.textContent = new Date().toLocaleString('th-TH');
+  }, 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "savedAt": "2026-03-03T07:42:08.725Z",
+  "chain": [
+    {
+      "index": 0,
+      "timestamp": 1772523728725,
+      "transactions": [],
+      "previousHash": "0",
+      "hash": "02fca5382b98f48e8d7e586b7260a0ac6a42352f82acbb529802d4f8fd4a2541"
+    }
+  ],
+  "pendingTransactions": []
+}

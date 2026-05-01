@@ -1,0 +1,30 @@
+[
+  {
+    "username": "garage1",
+    "password": "password123",
+    "role": "garage",
+    "shopName": "ศูนย์บริการ ABC",
+    "createdAt": 1772523728723
+  },
+  {
+    "username": "garage2",
+    "password": "password123",
+    "role": "garage",
+    "shopName": "อู่ซ่อมรถ XYZ",
+    "createdAt": 1772523728723
+  },
+  {
+    "username": "customer1",
+    "password": "password123",
+    "role": "customer",
+    "shopName": null,
+    "createdAt": 1772523728723
+  },
+  {
+    "username": "customer2",
+    "password": "password123",
+    "role": "customer",
+    "shopName": null,
+    "createdAt": 1772523728723
+  }
+]

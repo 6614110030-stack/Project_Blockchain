@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ค้นหารถ - CarChain</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="scan-lines"></div>
+<div class="grid-overlay"></div>
+
+<nav class="navbar navbar-dark">
+  <div class="container">
+    <div class="navbar-brand-container">
+      <a href="dashboard.html" style="text-decoration: none; color: inherit;">
+        <span class="navbar-brand">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">CAR<span class="highlight">CHAIN</span></span>
+        </span>
+      </a>
+      <div class="blockchain-pulse"></div>
+    </div>
+
+    <div class="nav-links">
+      <span class="user-welcome" style="display:none;">Hello, <span class="user-info">User</span></span>
+      <a href="dashboard.html" class="nav-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">Dashboard</span>
+      </a>
+      <!-- เพิ่มข้อมูล เฉพาะ garage -->
+      <a href="add.html" class="nav-btn garage-only" style="display:none;">
+        <span class="btn-bg"></span>
+        <span class="btn-text">เพิ่มข้อมูล</span>
+      </a>
+      <!-- ค้นหารถ active ทุก role -->
+      <a href="search.html" class="nav-btn active">
+        <span class="btn-bg"></span>
+        <span class="btn-text">ค้นหารถ</span>
+      </a>
+      <a href="blockchain.html" class="nav-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">Blockchain</span>
+      </a>
+      <a href="#" onclick="logout(); return false;" class="nav-btn logout-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">ออกจากระบบ</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container page-container">
+
+  <div class="page-header">
+    <div class="page-icon">🔍</div>
+    <h2 class="page-title">ค้นหาประวัติรถยนต์</h2>
+    <p class="page-subtitle">ตรวจสอบประวัติการซ่อมบำรุงด้วยหมายเลขตัวถัง (VIN)</p>
+  </div>
+
+  <div class="form-card" style="max-width: 700px;">
+    <div class="input-group-custom">
+      <label for="searchVin" class="input-label">
+        <span class="label-icon">🚗</span>
+        หมายเลขตัวถัง (VIN)
+      </label>
+      <div style="display:flex; gap:1rem;">
+        <input
+          id="searchVin"
+          type="text"
+          class="input-field"
+          placeholder="เช่น 1HGBH41JXMN109186"
+          autocomplete="off"
+          style="flex:1;"
+        >
+        <button onclick="searchCar()" class="submit-btn" style="width:auto; padding: 1rem 2rem; white-space:nowrap;">
+          <span class="btn-glow"></span>
+          <span class="btn-icon">🔍</span>
+          <span class="btn-text">ค้นหา</span>
+        </button>
+      </div>
+      <div class="input-border"></div>
+    </div>
+  </div>
+
+  <!-- ผลลัพธ์การค้นหา -->
+  <div id="carHistoryContainer" style="margin-top: 2rem;"></div>
+
+</div>
+
+<script src="app.js"></script>
+<script>
+  // Auto-fill VIN จาก URL param (จาก customer dashboard quick search)
+  window.addEventListener('load', () => {
+    const params = new URLSearchParams(window.location.search);
+    const vin = params.get('vin');
+    if (vin) {
+      const vinInput = document.getElementById('searchVin');
+      if (vinInput) {
+        vinInput.value = vin;
+        searchCar(); // ค้นหาอัตโนมัติ
+      }
+    }
+  });
+
+  // Enter key support
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('searchVin')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') searchCar();
+    });
+  });
+</script>
+
+<style>
+/* Car history display styles */
+.car-info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  animation: slideUp 0.6s ease-out;
+}
+
+.car-vin {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
+  letter-spacing: 2px;
+}
+
+.car-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.summary-item {
+  padding: 1rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.summary-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.summary-value {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.history-timeline {
+  animation: slideUp 0.7s ease-out;
+}
+
+.timeline-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 45px;
+  width: 2px;
+  height: calc(100% + 0.5rem);
+  background: linear-gradient(to bottom, var(--primary), transparent);
+  opacity: 0.3;
+}
+
+.timeline-item:last-child::before { display: none; }
+
+.timeline-marker {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: var(--bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.9rem;
+  box-shadow: 0 0 15px var(--glow-primary);
+}
+
+.timeline-content {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  border-color: var(--primary);
+  box-shadow: 0 5px 20px var(--glow-primary);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.timeline-date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.timeline-mileage {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.timeline-detail {
+  color: var(--text-primary);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  background: var(--bg-dark);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary);
+}
+
+.timeline-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.timeline-garage {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.timeline-block {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+
+@media (max-width: 576px) {
+  .timeline-item { flex-direction: column; }
+  .timeline-item::before { display: none; }
+  .car-summary { grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CarChain - ระบบตรวจสอบประวัติรถมือสอง</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="scan-lines"></div>
+<div class="grid-overlay"></div>
+
+<nav class="navbar navbar-dark">
+  <div class="container">
+    <div class="navbar-brand-container">
+      <span class="navbar-brand">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">CAR<span class="highlight">CHAIN</span></span>
+      </span>
+      <div class="blockchain-pulse"></div>
+    </div>
+
+    <div class="nav-links">
+      <a href="login.html" class="nav-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">เข้าสู่ระบบ</span>
+      </a>
+      <a href="register.html" class="nav-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">ลงทะเบียน</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="hero-section">
+  <div class="container">
+    
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="badge-glow"></div>
+        BLOCKCHAIN VERIFIED
+      </div>
+      
+      <h1 class="hero-title">
+        <span class="title-line" style="animation-delay: 0.1s">ระบบตรวจสอบ</span>
+        <span class="title-line" style="animation-delay: 0.3s">ประวัติรถยนต์มือสอง</span>
+      </h1>
+      
+      <p class="hero-subtitle">
+        <span style="animation-delay: 0.5s">ความโปร่งใสด้วยเทคโนโลยี Distributed Ledger</span>
+      </p>
+
+      <div class="hero-features">
+        <div class="feature-card" style="animation-delay: 0.6s">
+          <div class="feature-icon">🔐</div>
+          <div class="feature-title">Immutable</div>
+          <div class="feature-desc">ข้อมูลไม่สามารถแก้ไขได้</div>
+        </div>
+        <div class="feature-card" style="animation-delay: 0.7s">
+          <div class="feature-icon">⛓️</div>
+          <div class="feature-title">Traceable</div>
+          <div class="feature-desc">ตรวจสอบย้อนหลังได้ทุกขั้น</div>
+        </div>
+        <div class="feature-card" style="animation-delay: 0.8s">
+          <div class="feature-icon">✓</div>
+          <div class="feature-title">Verified</div>
+          <div class="feature-desc">ยืนยันด้วย Cryptographic Hash</div>
+        </div>
+      </div>
+
+      <div class="hero-cta" style="animation-delay: 0.9s">
+        <a href="login.html" class="cta-btn primary">
+          <span class="btn-glow"></span>
+          <span class="btn-text">เริ่มใช้งาน</span>
+          <span class="btn-arrow">→</span>
+        </a>
+        <a href="register.html" class="cta-btn secondary">
+          <span class="btn-text">ลงทะเบียน</span>
+          <span class="btn-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="blockchain-viz">
+        <div class="block-node" style="animation-delay: 0.2s">
+          <div class="node-glow"></div>
+          <div class="node-content">
+            <div class="node-title">Block #0</div>
+            <div class="node-hash">Genesis</div>
+          </div>
+        </div>
+        <div class="chain-link" style="animation-delay: 0.4s"></div>
+        <div class="block-node" style="animation-delay: 0.6s">
+          <div class="node-glow"></div>
+          <div class="node-content">
+            <div class="node-title">Block #1</div>
+            <div class="node-hash">a7f3...</div>
+          </div>
+        </div>
+        <div class="chain-link" style="animation-delay: 0.8s"></div>
+        <div class="block-node" style="animation-delay: 1s">
+          <div class="node-glow"></div>
+          <div class="node-content">
+            <div class="node-title">Block #2</div>
+            <div class="node-hash">9e2c...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tech-specs">
+  <div class="container">
+    <div class="specs-grid">
+      <div class="spec-item">
+        <div class="spec-label">Hash Algorithm</div>
+        <div class="spec-value">SHA-256</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Block Structure</div>
+        <div class="spec-value">Distributed</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Validation</div>
+        <div class="spec-value">Automated</div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-label">Security</div>
+        <div class="spec-value">Cryptographic</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ถ้า login อยู่แล้ว ข้ามไป dashboard เลย
+  if (localStorage.getItem('sessionId')) {
+    window.location.href = 'dashboard.html';
+  }
+</script>
+
+</body>
+</html>

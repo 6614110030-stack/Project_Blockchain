@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ลงทะเบียน - CarChain</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="scan-lines"></div>
+<div class="grid-overlay"></div>
+
+<nav class="navbar navbar-dark">
+  <div class="container">
+    <div class="navbar-brand-container">
+      <a href="index.html" style="text-decoration: none; color: inherit;">
+        <span class="navbar-brand">
+          <span class="logo-icon">⬡</span>
+          <span class="logo-text">CAR<span class="highlight">CHAIN</span></span>
+        </span>
+      </a>
+      <div class="blockchain-pulse"></div>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">หน้าแรก</span>
+      </a>
+      <a href="login.html" class="nav-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-text">เข้าสู่ระบบ</span>
+      </a>
+      <a href="register.html" class="nav-btn active">
+        <span class="btn-bg"></span>
+        <span class="btn-text">ลงทะเบียน</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="login-container">
+  
+  <div class="login-card" style="max-width: 600px;">
+    <div class="login-header">
+      <div class="logo-section">
+        <span class="logo-icon-large">⬡</span>
+        <h1 class="login-title">CAR<span class="highlight">CHAIN</span></h1>
+      </div>
+      <p class="login-subtitle">ลงทะเบียนบัญชีใหม่</p>
+    </div>
+
+    <div class="login-form">
+      
+      <!-- Role Selection -->
+      <div class="input-group-custom">
+        <label class="input-label">
+          <span class="label-icon">👤</span>
+          ประเภทบัญชี
+        </label>
+        <div class="role-selection">
+          <label class="role-option">
+            <input type="radio" name="role" value="garage" checked>
+            <div class="role-card">
+              <div class="role-icon">🔧</div>
+              <div class="role-name">อู่ซ่อมรถ</div>
+              <div class="role-desc">สำหรับศูนย์บริการและอู่ซ่อมรถ</div>
+            </div>
+          </label>
+          <label class="role-option">
+            <input type="radio" name="role" value="customer">
+            <div class="role-card">
+              <div class="role-icon">👨‍💼</div>
+              <div class="role-name">ลูกค้า</div>
+              <div class="role-desc">สำหรับเจ้าของรถและผู้ซื้อ</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Username -->
+      <div class="input-group-custom">
+        <label for="username" class="input-label">
+          <span class="label-icon">📝</span>
+          ชื่อผู้ใช้
+        </label>
+        <input 
+          id="username" 
+          type="text"
+          class="input-field" 
+          placeholder="กรอกชื่อผู้ใช้ (a-z, 0-9, ขีดล่าง)"
+          autocomplete="username"
+          required
+        >
+        <div class="input-border"></div>
+      </div>
+
+      <!-- Shop Name (for garage only) -->
+      <div class="input-group-custom" id="shopNameGroup" style="display: none;">
+        <label for="shopName" class="input-label">
+          <span class="label-icon">🏪</span>
+          ชื่ออู่/ศูนย์บริการ
+        </label>
+        <input 
+          id="shopName" 
+          type="text"
+          class="input-field" 
+          placeholder="เช่น ศูนย์บริการ ABC"
+          autocomplete="organization"
+        >
+        <div class="input-border"></div>
+      </div>
+
+      <!-- Password -->
+      <div class="input-group-custom">
+        <label for="password" class="input-label">
+          <span class="label-icon">🔒</span>
+          รหัสผ่าน
+        </label>
+        <input 
+          id="password" 
+          type="password"
+          class="input-field" 
+          placeholder="กรอกรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)"
+          autocomplete="new-password"
+          required
+        >
+        <div class="input-border"></div>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="input-group-custom">
+        <label for="confirmPassword" class="input-label">
+          <span class="label-icon">🔐</span>
+          ยืนยันรหัสผ่าน
+        </label>
+        <input 
+          id="confirmPassword" 
+          type="password"
+          class="input-field" 
+          placeholder="กรอกรหัสผ่านอีกครั้ง"
+          autocomplete="new-password"
+          required
+        >
+        <div class="input-border"></div>
+      </div>
+
+      <button onclick="register()" class="submit-btn">
+        <span class="btn-glow"></span>
+        <span class="btn-icon">✨</span>
+        <span class="btn-text">ลงทะเบียน</span>
+      </button>
+    </div>
+
+    <div class="register-link">
+      <p>มีบัญชีอยู่แล้ว? <a href="login.html">เข้าสู่ระบบที่นี่</a></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = "http://localhost:3000";
+
+// ถ้า login อยู่แล้ว ข้ามไป dashboard เลย
+if (localStorage.getItem('sessionId')) {
+  window.location.href = 'dashboard.html';
+}
+
+// Show/hide shop name field based on role
+document.querySelectorAll('input[name="role"]').forEach(radio => {
+  radio.addEventListener('change', (e) => {
+    const shopNameGroup = document.getElementById('shopNameGroup');
+    const shopNameInput = document.getElementById('shopName');
+    
+    if (e.target.value === 'garage') {
+      shopNameGroup.style.display = 'block';
+      shopNameInput.required = true;
+    } else {
+      shopNameGroup.style.display = 'none';
+      shopNameInput.required = false;
+      shopNameInput.value = '';
+    }
+  });
+});
+
+// Initialize - show shop name for garage (default selected)
+document.querySelector('input[value="garage"]').dispatchEvent(new Event('change'));
+
+async function register() {
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  const role = document.querySelector('input[name="role"]:checked').value;
+  const shopName = document.getElementById('shopName').value.trim();
+
+  if (!username || !password) {
+    Swal.fire({ icon: 'error', title: 'กรุณากรอกข้อมูล', text: 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน', background: '#0a0a0a', color: '#ffffff' });
+    return;
+  }
+
+  if (!/^[a-z0-9_]+$/.test(username)) {
+    Swal.fire({ icon: 'error', title: 'ชื่อผู้ใช้ไม่ถูกต้อง', text: 'ชื่อผู้ใช้ต้องประกอบด้วย a-z, 0-9 และขีดล่างเท่านั้น', background: '#0a0a0a', color: '#ff0044' });
+    return;
+  }
+
+  if (password.length < 6) {
+    Swal.fire({ icon: 'error', title: 'รหัสผ่านสั้นเกินไป', text: 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร', background: '#0a0a0a', color: '#ff0044' });
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    Swal.fire({ icon: 'error', title: 'รหัสผ่านไม่ตรงกัน', text: 'กรุณากรอกรหัสผ่านให้ตรงกันทั้งสองช่อง', background: '#0a0a0a', color: '#ff0044' });
+    return;
+  }
+
+  if (role === 'garage' && !shopName) {
+    Swal.fire({ icon: 'error', title: 'กรุณากรอกชื่ออู่', text: 'กรุณากรอกชื่ออู่หรือศูนย์บริการ', background: '#0a0a0a', color: '#ff0044' });
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password, role, shopName: role === 'garage' ? shopName : null })
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Registration failed');
+
+    Swal.fire({
+      icon: 'success',
+      title: 'ลงทะเบียนสำเร็จ!',
+      text: 'กรุณาเข้าสู่ระบบด้วยบัญชีใหม่ของคุณ',
+      background: '#0a0a0a',
+      color: '#00ff88',
+      confirmButtonColor: '#00ff88'
+    }).then(() => {
+      window.location.href = 'login.html';
+    });
+
+  } catch (error) {
+    Swal.fire({ icon: 'error', title: 'ลงทะเบียนไม่สำเร็จ', text: error.message, background: '#0a0a0a', color: '#ff0044' });
+  }
+}
+
+document.getElementById('confirmPassword').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') register();
+});
+</script>
+
+<style>
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  /* เว้น padding บนให้ navbar */
+  padding-top: 5rem;
+}
+
+.login-card {
+  max-width: 500px;
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.8s ease-out;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.logo-icon-large {
+  font-size: 3rem;
+  color: var(--primary);
+  animation: rotate 4s linear infinite;
+  filter: drop-shadow(0 0 20px var(--glow-primary));
+}
+
+.login-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.login-subtitle {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.login-form {
+  margin-bottom: 2rem;
+}
+
+.role-selection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.role-option { cursor: pointer; }
+
+.role-option input[type="radio"] { display: none; }
+
+.role-card {
+  padding: 1.5rem;
+  background: rgba(0, 255, 136, 0.05);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.role-option input[type="radio"]:checked + .role-card {
+  border-color: var(--primary);
+  background: rgba(0, 255, 136, 0.1);
+  box-shadow: 0 0 20px var(--glow-primary);
+}
+
+.role-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+}
+
+.role-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+.role-name {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.3rem;
+}
+
+.role-desc { font-size: 0.85rem; color: var(--text-muted); }
+
+.register-link {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.register-link p { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
+
+.register-link a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.register-link a:hover { text-decoration: underline; }
+
+@media (max-width: 576px) {
+  .role-selection { grid-template-columns: 1fr; }
+  .login-card { padding: 2rem 1.5rem; }
+}
+</style>
+
+</body>
+</html>
